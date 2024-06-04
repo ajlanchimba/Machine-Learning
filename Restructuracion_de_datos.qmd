@@ -1,0 +1,36 @@
+---
+title: "Restructuracion de datos"
+author: "Alexis Lanchimba"
+format: html
+editor: visual
+---
+
+## Librerias
+
+`readxl` es una libreria que permite leer archivos de excel en R.
+
+```{r}
+library(readxl)
+library(dplyr)
+```
+## Carga de datos
+
+```{r}
+#| label: Carga de datos
+mexico <-  read_excel("Datos/cuadro3.1.1.xls")
+```
+
+`slice` es una función que permite seleccionar un rango de filas de un data frame.
+
+```{r}
+#| label: Selecciono filas deseadas
+mexico <- mexico |> slice(3: (which(mexico[,1] == "Apátridas") - 2))
+```
+
+`select` es una función que permite seleccionar columnas de un data frame.
+```{r}
+#| label: Selecciono columnas deseadas
+mexico <- mexico |> select(1:(which(mexico[1,] == "Total") - 4))
+
+```
+
