@@ -34,3 +34,74 @@ mexico <- mexico |> select(1:(which(mexico[1,] == "Total") - 4))
 
 ```
 
+## Ordenamiento de encabezados
+
+`paste` es una función que permite concatenar cadenas de texto.
+`length` es una función que permite obtener la longitud de un objeto.
+`is.na` es una función que permite verificar si un objeto es NA.
+`substr` es una función que permite obtener una subcadena de un objeto.
+`nchar` es una función que permite obtener la longitud de una cadena de texto.    
+
+```{r}
+#| label: Ordeno encabezados
+
+encabezado_1 <- mexico[1,]
+encabezado_2 <- mexico[2,]
+
+#Relleno los NA del dataframe encabezado 1
+for (i in 2:length(encabezado_1)){
+    if (is.na(encabezado_1[i])){
+        encabezado_1[i] <- encabezado_1[i-1]
+    }
+}
+
+#Quito el caracter al final de la cadena
+encabezado_1 <- substr(encabezado_1, 1 , nchar(encabezado_1)-1)
+
+
+
+#Concateno los encabezados con un separador "_"
+for (i in 2:length(encabezado_1)){
+    encabezado_1[i] <- paste(encabezado_1[i], encabezado_2[i], sep = "_")
+}
+```
+
+## Cambio de encabezados
+`setNames` es una función que permite cambiar los nombres de las columnas de un data frame. 
+`n()` es una función que permite obtener la longitud de un objeto.
+`names` es una función que permite obtener los nombres de las columnas de un data frame.
+`filter` es una función que permite filtrar un data frame. quitar las filas que cumplan con una condición ademas de los valores NA.
+```{r}
+#| label: Cambio los encabezados del dataframe mexico
+
+mexico <- mexico |> setNames(encabezado_1) |> slice(4:n())
+```
+```{r}
+names(mexico)[1] <- "Pais"
+```
+```{r}
+mexico <- mexico |> filter(Pais != "Total general")
+```
+
+## Quito lo subtotale
+
+`select` es una función que permite seleccionar columnas de un data frame.
+`matches` es una función que permite seleccionar columnas que cumplan con una condición.
+`-` es un operador que permite quitar columnas de un data frame.
+```{r}
+#| label: Quito los subtotales
+
+mexico <- mexico |> select(-matches("Subtotal"))
+```
+
+
+## Separo por continente
+
+```{r}
+#| label: Separo por continente
+
+continente <- c("América", "Europa", "Asia", "Oceanía", "África")
+region_america <- c("América del Norte", "América Central", "Islas del Caribe", "América del Sur")
+
+```
+
